@@ -1,0 +1,66 @@
+import 'package:crm_app/features/user/profile/widgets/profile_widget.dart';
+import 'package:flutter/material.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isDarkMode = false;
+
+  @override
+  Widget build(BuildContext context) {
+    // MODIFIED: The Scaffold and AppBar are removed.
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const profileInfo(),
+          profileMenu(
+            icon: Icons.person_outline,
+            title: 'Edit Profile',
+            trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+            onTap: () {},
+          ),
+          profileMenu(
+            icon: Icons.lock_outline,
+            title: 'Change Password',
+            trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+            onTap: () {},
+          ),
+          profileMenu(
+            icon: Icons.notifications_outlined,
+            title: 'Notifications',
+            trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+            onTap: () {},
+          ),
+          profileMenu(
+            icon: Icons.language_outlined,
+            title: 'Language',
+            trailing: const Text(
+              'English',
+              style: TextStyle(color: Colors.grey, fontSize: 16),
+            ),
+            onTap: () {},
+          ),
+          profileMenu(
+            icon: Icons.dark_mode_outlined,
+            title: 'Dark Mode',
+            trailing: Switch(
+              value: _isDarkMode,
+              onChanged: (value) {
+                setState(() {
+                  _isDarkMode = value;
+                });
+              },
+              activeTrackColor: const Color(0xFF4A89F5).withOpacity(0.5),
+              activeColor: const Color(0xFF4A89F5),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
