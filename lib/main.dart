@@ -1,3 +1,4 @@
+import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
 import 'package:crm_app/features/user/dashboard/screens/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'sans-serif',
       ),
+      home: RoleSelectionScreen(),
+    );
+  }
+}
+
    
       home: const DashboardScreen(),
       debugShowCheckedModeBanner: false,
