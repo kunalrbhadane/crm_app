@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'sans-serif',
         scaffoldBackgroundColor: const Color(0xFFF7F8F3),
       ),
-     
+      debugShowCheckedModeBanner: false,
       home: const RoleSelectionScreen(), 
     );
   }
