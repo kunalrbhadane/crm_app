@@ -1,3 +1,4 @@
+import 'package:crm_app/features/user/enquiries/screens/new_enquiry_screen.dart';
 import 'package:flutter/material.dart';
 
 class DashboardHeaderWidget extends StatelessWidget
@@ -7,7 +8,7 @@ class DashboardHeaderWidget extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF4A89F5), // Unified blue color
+      backgroundColor: const Color(0xFF4A89F5), 
       elevation: 0,
       title: const Text(
         'My Dashboard',
@@ -36,12 +37,12 @@ class WelcomeHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // MODIFIED: Adjusted height to provide the correct amount of blue background.
+      
       height: 290,
       padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0),
       width: double.infinity,
       decoration: const BoxDecoration(
-        color: Color(0xFF4A89F5), // Unified blue color
+        color: Color(0xFF4A89F5), 
       ),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,42 +141,74 @@ class ActionButtonsWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
-          Expanded(child: _actionButton(icon: Icons.add, label: 'New Enquiry')),
+          // MODIFIED: Added onTap navigation
+          Expanded(
+            child: _actionButton(
+              context: context,
+              icon: Icons.add,
+              label: 'New Enquiry',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NewEnquiryScreen(),
+                  ),
+                );
+              },
+            ),
+          ),
           const SizedBox(width: 16),
-          Expanded(child: _actionButton(icon: Icons.history, label: 'History')),
+          Expanded(
+            child: _actionButton(
+              context: context,
+              icon: Icons.history,
+              label: 'History',
+              onTap: () {}, // No action yet for History
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _actionButton({required IconData icon, required String label}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            spreadRadius: 2,
-            offset: const Offset(0, 5),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: const Color(0xFFE3F2FD), 
-            child: Icon(icon, color: Colors.blueAccent, size: 28),
-          ),
-
-          const SizedBox(height: 12),
-          Text(label,
-              style:
-                  const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-        ],
+  // MODIFIED: _actionButton is now wrapped in an InkWell and takes onTap
+  Widget _actionButton({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 2,
+              offset: const Offset(0, 5),
+            )
+          ],
+        ),
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: const Color(0xFFE3F2FD),
+              child: Icon(icon, color: Colors.blueAccent, size: 28),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            ),
+          ],
+        ),
       ),
     );
   }

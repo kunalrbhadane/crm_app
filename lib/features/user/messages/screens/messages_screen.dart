@@ -46,22 +46,25 @@ class MessagesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // MODIFIED: The Scaffold and AppBar are removed.
-    return Container(
-      color: const Color(0xFFF4F7FC),
-      child: ListView.builder(
-        padding: const EdgeInsets.only(top: 10),
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          final message = messages[index];
-          return MessageItemWidget(
-            sender: message.sender,
-            messagePreview: message.messagePreview,
-            time: message.time,
-            icon: message.icon,
-            isUnread: message.isUnread,
-          );
-        },
+    
+    return Scaffold(
+      
+      body: Container(
+        color: const Color(0xFFF4F7FC),
+        child: ListView.builder(
+          padding: const EdgeInsets.only(top: 10),
+          itemCount: messages.length,
+          itemBuilder: (context, index) {
+            final message = messages[index];
+            return MessageItemWidget(
+              sender: message.sender,
+              messagePreview: message.messagePreview,
+              time: message.time,
+              icon: message.icon,
+              isUnread: message.isUnread,
+            );
+          },
+        ),
       ),
     );
   }

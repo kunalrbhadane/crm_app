@@ -1,5 +1,4 @@
 import 'package:crm_app/features/user/dashboard/widgets/dashboardwidget.dart';
-
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -7,30 +6,36 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
-    return Stack(
-      children: [
+
+    return SingleChildScrollView(
+      child: Container(
        
-        Container(color: const Color(0xFFF4F7FC)),
+        color: const Color(0xFFF4F7FC),
+        child: Column(
+          children: [
+           
+            Stack(
 
-        const WelcomeHeaderWidget(),
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                
+                const WelcomeHeaderWidget(),
+                const Positioned(
+                  top: 120, 
+                  child: StatsCardWidget(),
+                ),
+              ],
+            ),
 
-        SingleChildScrollView(
-          child: Column(
-            children: [
-         
-              const SizedBox(height: 120),
-
-              const StatsCardWidget(),
-              const SizedBox(height: 40),
-              
-              const ActionButtonsWidget(),
-              const SizedBox(height: 8),
-              const EnquiriesSectionWidget(),
-            ],
-          ),
+            const SizedBox(height: 20),
+            const ActionButtonsWidget(),
+            const SizedBox(height: 20),
+            const EnquiriesSectionWidget(),
+             const SizedBox(height: 40),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

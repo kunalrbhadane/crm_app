@@ -1,15 +1,14 @@
 import 'package:crm_app/features/user/dashboard/screens/dashboard_screen.dart';
+import 'package:crm_app/features/user/dashboard/widgets/dashboardwidget.dart';
 import 'package:crm_app/features/user/enquiries/screens/enquiri_screen.dart';
+import 'package:crm_app/features/user/enquiries/widgets/enquiri_widget.dart';
 import 'package:crm_app/features/user/messages/screens/messages_screen.dart';
+import 'package:crm_app/features/user/messages/widgets/messages_widgets.dart';
 import 'package:crm_app/features/user/profile/screens/profile_screen.dart';
+import 'package:crm_app/features/user/profile/widgets/profile_widget.dart';
 import 'package:crm_app/features/user/side_drawer_widget.dart';
 import 'package:flutter/material.dart';
 
-// Import the header widgets to be used as AppBars
-import 'package:crm_app/features/user/dashboard/widgets/dashboardwidget.dart'; // MODIFIED: Import added
-import 'package:crm_app/features/user/enquiries/widgets/enquiri_widget.dart';
-import 'package:crm_app/features/user/messages/widgets/messages_widgets.dart';
-import 'package:crm_app/features/user/profile/widgets/profile_widget.dart';
 
 class UserNavigation extends StatefulWidget {
   const UserNavigation({super.key});
@@ -28,7 +27,6 @@ class _UserNavigationState extends State<UserNavigation> {
     const ProfileScreen(),
   ];
 
-  // MODIFIED: Replaced 'null' with a new DashboardHeaderWidget for consistency.
   static final List<PreferredSizeWidget?> _appBars = <PreferredSizeWidget?>[
     const DashboardHeaderWidget(),
     const EnquiriesHeaderWidget(),
@@ -42,11 +40,20 @@ class _UserNavigationState extends State<UserNavigation> {
     });
   }
 
+  void _navigateToPage(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+ 
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBars.elementAt(_selectedIndex),
-      drawer: const SideDrawerWidget(),
+      // MODIFIED: We now pass the _navigateToPage function to the drawer.
+      drawer: SideDrawerWidget(onNavItemTapped: _navigateToPage),
       body: Center(
         child: _screens.elementAt(_selectedIndex),
       ),

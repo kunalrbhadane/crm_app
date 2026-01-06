@@ -15,7 +15,7 @@ class EnquiriesHeaderWidget extends StatelessWidget implements PreferredSizeWidg
           fontWeight: FontWeight.bold,
         ),
       ),
-      // MODIFIED: Replaced Icon with IconButton to handle tap events.
+      
       leading: IconButton(
         icon: const Icon(Icons.menu, color: Colors.white, size: 28),
         onPressed: () {
