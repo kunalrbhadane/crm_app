@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             _buildSectionHeader('Account'),
-            // MODIFIED: Each item is now in its own separate card.
+           
             _buildSettingsCard(
               child: _buildNavigationTile(
                   title: 'Change Password', subtitle: 'Update your password'),
@@ -92,7 +92,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // MODIFIED: Simplified to take a single child widget.
   Widget _buildSettingsCard({required Widget child}) {
     return Container(
       decoration: BoxDecoration(

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'sans-serif',
       ),
-      // MODIFIED: Class name updated to follow Dart conventions.
+    
       home: const UserNavigation(),
       debugShowCheckedModeBanner: false,
     );
