@@ -1,9 +1,8 @@
-import 'package:crm_app/features/user/dashboard/screens/dashboard_screen.dart';
+import 'package:crm_app/features/user/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarIconBrightness: Brightness.light,
   ));
@@ -21,8 +20,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'sans-serif',
       ),
-   
-      home: const DashboardScreen(),
+      // MODIFIED: Class name updated to follow Dart conventions.
+      home: const UserNavigation(),
       debugShowCheckedModeBanner: false,
     );
   }

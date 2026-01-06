@@ -6,33 +6,36 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FC),
-      body: SingleChildScrollView(
+
+    return SingleChildScrollView(
+      child: Container(
+       
+        color: const Color(0xFFF4F7FC),
         child: Column(
           children: [
+           
             Stack(
+
               clipBehavior: Clip.none,
-              alignment: Alignment.topCenter,
+              alignment: Alignment.center,
               children: [
-                const HeaderWidget(),
                 
-                Positioned(
-                  top: 200,
-                  child: const StatsCardWidget(),
+                const WelcomeHeaderWidget(),
+                const Positioned(
+                  top: 120, 
+                  child: StatsCardWidget(),
                 ),
               ],
             ),
-            const SizedBox(height: 20), 
 
+            const SizedBox(height: 20),
             const ActionButtonsWidget(),
-            const SizedBox(height: 6),
-
+            const SizedBox(height: 20),
             const EnquiriesSectionWidget(),
+             const SizedBox(height: 40),
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavBarWidget(),
     );
   }
 }
