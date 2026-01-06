@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'sans-serif',
       ),
       home: RoleSelectionScreen(),
+      
+      debugShowCheckedModeBanner: false,
     );
   }
 }
