@@ -10,14 +10,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // 1. Load Environment Variables
   await dotenv.load(fileName: ".env");
 
-  // 2. Hide Status Bar
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
   runApp(
-    // 3. Wrap App in MultiProvider
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
