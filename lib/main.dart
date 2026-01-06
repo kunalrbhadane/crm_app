@@ -1,8 +1,10 @@
-import 'package:crm_app/features/user/navigation/navigation.dart';
+import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
 void main() {
+  
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarIconBrightness: Brightness.light,
   ));
@@ -20,9 +22,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'sans-serif',
       ),
-      // MODIFIED: Class name updated to follow Dart conventions.
-      home: const UserNavigation(),
-      debugShowCheckedModeBanner: false,
+      home: RoleSelectionScreen(),
     );
   }
 }
+
+   
+     
+ 
