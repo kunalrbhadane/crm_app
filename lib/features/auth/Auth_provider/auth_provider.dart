@@ -23,10 +23,12 @@ class AuthProvider extends ChangeNotifier {
         await TokenStorage.saveToken(token);
       }
 
-      // 2. Save User Details (Optional but recommended)
-      if (response['user'] != null) {
-        // You can create a method in TokenStorage to save user name/role
-        // await TokenStorage.saveUserData(jsonEncode(response['user']));
+      // 2. Save User Details
+      if (response['user'] != null && response['user'] is Map) {
+         final user = response['user'];
+         if (user.containsKey('name')) {
+             await TokenStorage.saveUserName(user['name']);
+         }
       }
 
       _setLoading(false);
@@ -56,6 +58,10 @@ class AuthProvider extends ChangeNotifier {
   }
   
   Future<void> logout() async {
+    final token = await TokenStorage.getToken();
+    if (token != null) {
+      await _apiService.logout(token);
+    }
     await TokenStorage.clearToken();
     notifyListeners();
   }

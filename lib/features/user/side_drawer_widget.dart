@@ -1,8 +1,11 @@
 import 'package:crm_app/features/user/enquiries/screens/new_enquiry_screen.dart';
 import 'package:crm_app/features/user/help/screen/help_screen.dart';
 import 'package:crm_app/features/user/settings/screen/settings_screen.dart';
+import 'package:crm_app/features/auth/Auth_provider/auth_provider.dart';
+import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
 import 'package:crm_app/features/user/upload/file_upload.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SideDrawerWidget extends StatelessWidget {
   
@@ -135,8 +138,22 @@ class SideDrawerWidget extends StatelessWidget {
                 ),
               ),
               child: const Text('Logout', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                Navigator.of(context).pop(); // Close dialog first
+
+                // Call the logout method in provider
+                await Provider.of<AuthProvider>(context, listen: false).logout();
+
+                // Navigate to Role Selection Screen and remove all previous routes
+                if (context.mounted) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RoleSelectionScreen(),
+                    ),
+                    (route) => false,
+                  );
+                }
               },
             ),
           ],

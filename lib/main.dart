@@ -1,5 +1,7 @@
 import 'package:crm_app/features/auth/Auth_provider/auth_provider.dart';
 import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
+import 'package:crm_app/features/user/dashboard/provider/dashboard_provider.dart';
+import 'package:crm_app/features/user/enquiries/provider/enquiri_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +20,9 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => DashboardProvider()),
+        ChangeNotifierProvider(create: (_) => EnquiriProvider()),
+
       ],
       child: const MyApp(),
     ),
