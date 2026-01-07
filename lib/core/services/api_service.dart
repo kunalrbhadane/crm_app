@@ -48,4 +48,5 @@ class ApiService {
       throw Exception(e.toString().replaceAll('Exception:', '').trim());
     }
   }
+  
 }
