@@ -150,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               bool success = await authProvider.login(
                                 _emailController.text.trim(),
                                 _passwordController.text.trim(),
+                                widget.role,
                                 context,
                               );
 
