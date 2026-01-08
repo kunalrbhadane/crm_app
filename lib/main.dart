@@ -1,3 +1,5 @@
+import 'package:crm_app/core/providers/navigation_provider.dart';
+import 'package:crm_app/core/theme/app_theme.dart';
 import 'package:crm_app/features/auth/Auth_provider/auth_provider.dart';
 import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
 import 'package:crm_app/features/user/dashboard/provider/dashboard_provider.dart';
@@ -22,6 +24,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
         ChangeNotifierProvider(create: (_) => EnquiriProvider()),
+        ChangeNotifierProvider(create: (_) => NavigationProvider()),
 
       ],
       child: const MyApp(),
@@ -36,10 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'sans-serif',
-        scaffoldBackgroundColor: const Color(0xFFF7F8F3),
-      ),
+      theme: AppTheme.lightTheme,
      
       home: const RoleSelectionScreen(), 
     );

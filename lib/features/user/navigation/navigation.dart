@@ -1,3 +1,4 @@
+import 'package:crm_app/core/providers/navigation_provider.dart';
 import 'package:crm_app/features/user/dashboard/screens/dashboard_screen.dart';
 import 'package:crm_app/features/user/dashboard/widgets/dashboardwidget.dart';
 import 'package:crm_app/features/user/enquiries/screens/enquiri_screen.dart';
@@ -8,17 +9,11 @@ import 'package:crm_app/features/user/profile/screens/profile_screen.dart';
 import 'package:crm_app/features/user/profile/widgets/profile_widget.dart';
 import 'package:crm_app/features/user/side_drawer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
-class UserNavigation extends StatefulWidget {
+class UserNavigation extends StatelessWidget {
   const UserNavigation({super.key});
-
-  @override
-  State<UserNavigation> createState() => _UserNavigationState();
-}
-
-class _UserNavigationState extends State<UserNavigation> {
-  int _selectedIndex = 0;
 
   static final List<Widget> _screens = <Widget>[
     const DashboardScreen(),
@@ -34,34 +29,28 @@ class _UserNavigationState extends State<UserNavigation> {
     const profileHearder(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  void _navigateToPage(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
- 
-    Navigator.of(context).pop();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBars.elementAt(_selectedIndex),
-      // MODIFIED: We now pass the _navigateToPage function to the drawer.
-      drawer: SideDrawerWidget(onNavItemTapped: _navigateToPage),
-      body: Center(
-        child: _screens.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: _buildRoundedNavigationBar(),
+    return Consumer<NavigationProvider>(
+      builder: (context, provider, child) {
+        return Scaffold(
+          appBar: _appBars.elementAt(provider.currentIndex),
+          drawer: SideDrawerWidget(
+            onNavItemTapped: (index) {
+              provider.setIndex(index);
+              Navigator.of(context).pop();
+            },
+          ),
+          body: Center(
+            child: _screens.elementAt(provider.currentIndex),
+          ),
+          bottomNavigationBar: _buildRoundedNavigationBar(context, provider.currentIndex),
+        );
+      },
     );
   }
 
-  Widget _buildRoundedNavigationBar() {
+  Widget _buildRoundedNavigationBar(BuildContext context, int currentIndex) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       decoration: BoxDecoration(
@@ -100,8 +89,10 @@ class _UserNavigationState extends State<UserNavigation> {
               label: 'Profile',
             ),
           ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
+          currentIndex: currentIndex,
+          onTap: (index) {
+            Provider.of<NavigationProvider>(context, listen: false).setIndex(index);
+          },
           selectedItemColor: const Color(0xFF4A89F5),
           unselectedItemColor: Colors.grey.shade600,
           showUnselectedLabels: true,

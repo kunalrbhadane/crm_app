@@ -19,7 +19,7 @@ class ApiService {
     final url = Uri.parse('$baseUrl$endpoint');
     
     try {
-      print("Logging in to: $url"); // Debug print
+      
 
       final response = await http.post(
         url,
@@ -53,7 +53,7 @@ class ApiService {
     final url = Uri.parse('$baseUrl/enquiries/dashboard-count');
     
     try {
-      print("Fetching dashboard counts from: $url"); // Debug print
+      // Debug print
 
       final response = await http.get(
         url,
@@ -83,10 +83,9 @@ class ApiService {
 
   
   
-  Future<List<dynamic>> fetchEnquiries(String token, {String filter = 'week', int page = 1, int limit = 10}) async {
-    final url = Uri.parse('$baseUrl/enquiries/contact-enquiries?filter=$filter&page=$page&limit=$limit');
+  Future<List<dynamic>> fetchEnquiries(String token, {String filter = '', int page = 1, int limit = 10}) async {
+    final url = Uri.parse('$baseUrl/enquiries/contact-enquiries?${filter.isNotEmpty ? 'filter=$filter&' : ''}page=$page&limit=$limit');
     try {
-      print("Fetching enquiries from: $url");
       final response = await http.get(
         url,
         headers: {
@@ -145,7 +144,6 @@ class ApiService {
       );
     } catch (e) {
       // Log error but verify client logout proceeds
-      print("Logout API error: $e");
     }
   }
 }

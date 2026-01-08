@@ -1,3 +1,4 @@
+import 'package:crm_app/core/theme/app_theme.dart';
 import 'package:crm_app/features/user/enquiries/provider/enquiri_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,25 +23,8 @@ class _NewEnquiryScreenState extends State<NewEnquiryScreen> {
   String? _selectedService;
   bool _isLoading = false;
 
-  final List<String> _courses = [
-    'Web Development',
-    'Data Science',
-    'UI/UX Design',
-    'Digital Marketing',
-    'Mobile App Development',
-    'Python Programming',
-    'Full Stack Development'
-  ];
-
-  final List<String> _services = [
-    'Website Development',
-    'Mobile App',
-    'SEO Services',
-    'Branding',
-    'E-commerce Solution',
-    'Custom Software',
-    'Maintenance & Support'
-  ];
+  final List<String> _courses = ['Web Development', 'App Development', 'Data Science', 'UI/UX Design'];
+  final List<String> _services = ['SEO Services', 'Branding', 'Consulting'];
 
   @override
   void dispose() {
@@ -56,43 +40,67 @@ class _NewEnquiryScreenState extends State<NewEnquiryScreen> {
     FocusScope.of(context).unfocus();
     
     if (_formKey.currentState!.validate()) {
+      
+      if (_selectedEnquiryType == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please select an Enquiry Type'), backgroundColor: Colors.red),
+        );
+        return;
+      }
+      if (_selectedEnquiryType == 'Student' && _selectedCourse == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please select a course for Student enquiry'), backgroundColor: Colors.red),
+        );
+        return;
+      }
+      if (_selectedEnquiryType == 'Client' && _selectedService == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please select a service for Client enquiry'), backgroundColor: Colors.red),
+        );
+        return;
+      }
+
+
+
       setState(() {
         _isLoading = true;
       });
 
+      final provider = Provider.of<EnquiriProvider>(context, listen: false);
+      
+      
+      final Map<String, dynamic> enquiryData = {
+        'name': _nameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'phone': _phoneController.text.trim(),
+        'enquiryType': (_selectedEnquiryType ?? 'Other').toLowerCase(),
+        'message': _messageController.text.trim(),
+        
+        if (_selectedEnquiryType == 'Student') 'course': _selectedCourse,
+
+        if (_selectedEnquiryType == 'Client') 'service': _selectedService, 
+      
+        if (_selectedEnquiryType == 'Other') 'notes': _otherEnquiryController.text.trim(),
+        
+        if (_selectedEnquiryType == 'Other') 'otherDetails': _otherEnquiryController.text.trim(),
+      };
+
       try {
-        final enquiryData = {
-          'name': _nameController.text.trim(),
-          'email': _emailController.text.trim(),
-          'phone': _phoneController.text.trim(),
-          'enquiryType': (_selectedEnquiryType ?? 'Other').toLowerCase(),
-          if (_selectedEnquiryType == 'Student' && _selectedCourse != null)
-            'course': _selectedCourse,
-          if (_selectedEnquiryType == 'Client' && _selectedService != null)
-            'service': _selectedService,
-          // MODIFIED: Changed key from 'otherDetails' to 'notes' to match the model
-          if (_selectedEnquiryType == 'Other')
-            'notes': _otherEnquiryController.text.trim(),
-          'message': _messageController.text.trim(),
-          'status': 'New',
-        };
-
-        await Provider.of<EnquiriProvider>(context, listen: false).createEnquiry(enquiryData);
-
+        await provider.createEnquiry(enquiryData);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Enquiry submitted successfully!'),
+              content: Text('Enquiry created successfully!'),
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.of(context).pop();
+          Navigator.pop(context);
         }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error: ${e.toString()}'),
+              content: Text('Failed to create enquiry: $e'),
               backgroundColor: Colors.red,
             ),
           );
@@ -110,9 +118,9 @@ class _NewEnquiryScreenState extends State<NewEnquiryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FC),
+      backgroundColor: AppTheme.scaffoldBackground,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF4A89F5),
+        backgroundColor: AppTheme.primaryBlue,
         elevation: 0,
         title: const Text('New Enquiry', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         leading: IconButton(
@@ -193,7 +201,7 @@ class _NewEnquiryScreenState extends State<NewEnquiryScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _submitEnquiry,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4A89F5),
+                      backgroundColor: AppTheme.primaryBlue,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

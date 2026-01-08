@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenStorage {
   static const String _tokenKey = 'auth_token';
-  static const String _userKey = 'user_data';
+ 
 
   static const String _userNameKey = 'user_name';
 

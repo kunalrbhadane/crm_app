@@ -24,7 +24,7 @@ class EnquiriProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   // Initial Fetch (Pull to Refresh calls this)
-  Future<void> fetchEnquiries({bool refresh = false}) async {
+  Future<void> fetchEnquiries({bool refresh = false, String filter = ''}) async {
     if (refresh) {
       _page = 1;
       _hasMore = true;
@@ -45,7 +45,8 @@ class EnquiriProvider extends ChangeNotifier {
       final newEnquiriesData = await _apiService.fetchEnquiries(
         token, 
         page: _page, 
-        limit: _limit
+        limit: _limit,
+        filter: filter // Pass the filter here
       );
       
       final newEnquiries = newEnquiriesData.map((e) => Enquiry.fromJson(e)).toList();

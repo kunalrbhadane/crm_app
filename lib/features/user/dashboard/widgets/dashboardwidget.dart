@@ -1,9 +1,11 @@
+import 'package:crm_app/core/providers/navigation_provider.dart';
+import 'package:crm_app/core/theme/app_theme.dart';
 import 'package:crm_app/features/user/dashboard/provider/dashboard_provider.dart';
-import 'package:crm_app/features/user/enquiries/screens/enquiri_screen.dart';
 import 'package:crm_app/features/user/enquiries/screens/new_enquiry_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+
 
 class DashboardHeaderWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -12,7 +14,7 @@ class DashboardHeaderWidget extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF4A89F5), 
+      backgroundColor: AppTheme.primaryBlue, 
       elevation: 0,
       title: const Text(
         'My Dashboard',
@@ -47,7 +49,7 @@ class WelcomeHeaderWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0),
       width: double.infinity,
       decoration: const BoxDecoration(
-        color: Color(0xFF4A89F5), 
+        color: AppTheme.primaryBlue, 
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,11 +120,11 @@ class StatsCardWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildCounter('Total', isLoading ? '' : totalCount, Icons.description, isLoading),
+          _buildCounter('Total', isLoading ? '' : totalCount, Icons.list_alt_outlined, isLoading),
           _buildVerticalDivider(),
-          _buildCounter('Client', isLoading ? '' : clientCount, Icons.more_horiz_rounded, isLoading),
+          _buildCounter('Client', isLoading ? '' : clientCount, Icons.business_outlined, isLoading),
           _buildVerticalDivider(),
-          _buildCounter('Student', isLoading ? '' : studentCount, Icons.check_circle_outline, isLoading),
+          _buildCounter('Student', isLoading ? '' : studentCount, Icons.school_outlined, isLoading),
         ],
       ),
     );
@@ -242,7 +244,7 @@ class ActionButtonsWidget extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 24,
-              backgroundColor: const Color(0xFFE3F2FD),
+              backgroundColor: AppTheme.primaryBlueLight,
               child: Icon(icon, color: Colors.blueAccent, size: 28),
             ),
             const SizedBox(height: 12),
@@ -275,12 +277,7 @@ class EnquiriesSectionWidget extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const EnquiriScreen(),
-                    ),
-                  );
+                  Provider.of<NavigationProvider>(context, listen: false).setIndex(1);
                 },
                 child:
                     const Text('View All', style: TextStyle(color: Colors.blue)),
@@ -339,13 +336,13 @@ class EnquiriesSectionWidget extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFE3F2FD),
+                                color: AppTheme.primaryBlueLight,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 enquiry.enquiryType,
                                 style: const TextStyle(
-                                  color: Color(0xFF1976D2),
+                                  color: AppTheme.primaryBlueText,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -363,9 +360,20 @@ class EnquiriesSectionWidget extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                         ],
+                         if (enquiry.enquiryType.toLowerCase() == 'other' && enquiry.notes != null && enquiry.notes!.isNotEmpty)
+                        Text(
+                          "Details: ${enquiry.notes}",
+                          style: const TextStyle(fontSize: 12, color: Colors.blueGrey),
+                        ),
+
                         if (enquiry.course != null)
                            Text(
                             "Course: ${enquiry.course}",
+                            style: const TextStyle(fontSize: 12, color: Colors.blueGrey),
+                           ),
+                        if (enquiry.service != null)
+                           Text(
+                            "Service: ${enquiry.service}",
                             style: const TextStyle(fontSize: 12, color: Colors.blueGrey),
                            ),
                         const SizedBox(height: 4),

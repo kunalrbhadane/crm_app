@@ -1,6 +1,5 @@
 import 'package:crm_app/features/admin/dashboard/screens/dashboard.dart';
 import 'package:crm_app/features/auth/Auth_provider/auth_provider.dart';
-import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
 import 'package:crm_app/features/user/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
