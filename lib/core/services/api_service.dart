@@ -232,4 +232,105 @@ Future<Map<String, dynamic>> createUser(String name, String email, String passwo
     }
   }
 
+
+
+
+   Future<Map<String, dynamic>> getEnquiries({
+    int page = 1,
+    String dateFilter = 'all',   // 'today', 'week', 'month', 'all'
+    String? enquiryType,         // 'student', 'client', 'other' (nullable)
+    String? status,
+  }) async {
+    // Build Query String
+    String queryString = 'page=$page&limit=10&dateFilter=$dateFilter';
+    
+    if (enquiryType != null && enquiryType != 'All Types') {
+      queryString += '&enquiryType=${enquiryType.toLowerCase()}';
+    }
+    // If your API supports status filter:
+    if (status != null && status != 'All') {
+      queryString += '&status=$status';
+    }
+
+    final url = Uri.parse('$baseUrl/enquiries/contact-enquiries?$queryString');
+    
+    final token = await TokenStorage.getToken();
+    if (token == null) throw Exception('No token found');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        if (data['success'] == true) {
+          return data;
+        } else {
+          throw Exception(data['message'] ?? 'Failed to fetch enquiries');
+        }
+      } else {
+        throw Exception(data['message'] ?? 'Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception(e.toString().replaceAll('Exception:', '').trim());
+    }
+  }
+
+
+
+
+  
+  
+  // NEW: Get Dashboard Counts
+  Future<Map<String, dynamic>> getDashboardCounts({
+    String dateFilter = 'all',
+    String? enquiryType,
+    String? status,
+  }) async {
+    // Build Query String (Same logic as getEnquiries)
+    String queryString = 'dateFilter=$dateFilter';
+    
+    if (enquiryType != null && enquiryType != 'All Types') {
+      queryString += '&enquiryType=${enquiryType.toLowerCase()}';
+    }
+    if (status != null && status != 'All') {
+      queryString += '&status=$status';
+    }
+
+    final url = Uri.parse('$baseUrl/enquiries/dashboard-count?$queryString');
+    
+    final token = await TokenStorage.getToken();
+    if (token == null) throw Exception('No token found');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        if (data['success'] == true) {
+          return data;
+        } else {
+          throw Exception(data['message'] ?? 'Failed to fetch counts');
+        }
+      } else {
+        throw Exception(data['message'] ?? 'Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception(e.toString().replaceAll('Exception:', '').trim());
+    }
+  }
+
 }

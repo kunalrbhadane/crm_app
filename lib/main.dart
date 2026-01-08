@@ -1,3 +1,4 @@
+import 'package:crm_app/features/admin/dashboard/enquiry_provider/enquiry_provider.dart';
 import 'package:crm_app/features/admin/dashboard/user_provider/user_provider.dart';
 import 'package:crm_app/features/auth/Auth_provider/auth_provider.dart';
 import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
@@ -20,6 +21,8 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
          ChangeNotifierProvider(create: (_) => UserProvider()),
+         ChangeNotifierProvider(create: (_) => EnquiryProvider()),
+
       ],
       child: const MyApp(),
     ),
