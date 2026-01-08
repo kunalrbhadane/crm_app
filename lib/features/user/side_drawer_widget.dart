@@ -4,17 +4,37 @@ import 'package:crm_app/features/user/settings/screen/settings_screen.dart';
 import 'package:crm_app/features/auth/Auth_provider/auth_provider.dart';
 import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
 import 'package:crm_app/features/user/upload/file_upload.dart';
+import 'package:crm_app/core/utils/token_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SideDrawerWidget extends StatelessWidget {
-  
+class SideDrawerWidget extends StatefulWidget {
   final ValueChanged<int> onNavItemTapped;
 
   const SideDrawerWidget({
     super.key,
     required this.onNavItemTapped,
   });
+
+  @override
+  State<SideDrawerWidget> createState() => _SideDrawerWidgetState();
+}
+
+class _SideDrawerWidgetState extends State<SideDrawerWidget> {
+  String? _userName;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final name = await TokenStorage.getUserName();
+    setState(() {
+      _userName = name;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +53,14 @@ class SideDrawerWidget extends StatelessWidget {
           _buildDrawerItem(
             icon: Icons.home_outlined,
             text: 'Home',
-            onTap: () => onNavItemTapped(0),
+            onTap: () => widget.onNavItemTapped(0),
           ),
           
+
           _buildDrawerItem(
             icon: Icons.list_alt_outlined,
             text: 'My Enquiries',
-            onTap: () => onNavItemTapped(1),
+            onTap: () => widget.onNavItemTapped(1),
           ),
           // This item pushes a new screen, so its logic remains the same.
           _buildDrawerItem(
@@ -61,8 +82,9 @@ class SideDrawerWidget extends StatelessWidget {
 
           _buildDrawerItem(
             icon: Icons.message_outlined,
+
             text: 'Messages',
-            onTap: () => onNavItemTapped(2),
+            onTap: () => widget.onNavItemTapped(2),
           ),
           _buildDrawerItem(
             icon: Icons.file_upload_outlined,
@@ -106,6 +128,7 @@ class SideDrawerWidget extends StatelessWidget {
               _showLogoutDialog(context);
             },
           ),
+
         ],
       ),
     );
@@ -171,10 +194,11 @@ class SideDrawerWidget extends StatelessWidget {
           bottomRight: Radius.circular(20.0),
         ),
       ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: const []), // Forces centering
+          const CircleAvatar(
             radius: 30,
             backgroundColor: Colors.white,
             child: Icon(
@@ -183,10 +207,10 @@ class SideDrawerWidget extends StatelessWidget {
               color: Color(0xFF4A89F5),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
-            'kunal',
-            style: TextStyle(
+            _userName ?? 'Guest',
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.bold,

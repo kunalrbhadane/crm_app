@@ -23,8 +23,19 @@ class _NewEnquiryScreenState extends State<NewEnquiryScreen> {
   String? _selectedService;
   bool _isLoading = false;
 
-  final List<String> _courses = ['Web Development', 'App Development', 'Data Science', 'UI/UX Design'];
-  final List<String> _services = ['SEO Services', 'Branding', 'Consulting'];
+  final List<String> _courses = [
+'UI/UX Design',
+'Digital Marketing',
+'Mobile App Development',
+'Python Programming',
+'Full Stack Development'];
+  final List<String> _services = [
+'Mobile App',
+'SEO Services',
+'Branding',
+'E-commerce Solution',
+'Custom Software',
+'Maintenance & Support',];
 
   @override
   void dispose() {

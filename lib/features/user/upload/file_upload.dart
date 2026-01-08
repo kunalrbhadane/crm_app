@@ -1,7 +1,84 @@
+import 'dart:io';
+
+import 'package:crm_app/core/services/api_service.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
-class FileUploadScreen extends StatelessWidget {
+class FileUploadScreen extends StatefulWidget {
   const FileUploadScreen({super.key});
+
+  @override
+  State<FileUploadScreen> createState() => _FileUploadScreenState();
+}
+
+class _FileUploadScreenState extends State<FileUploadScreen> {
+  File? _selectedFile;
+  String? _fileName;
+  bool _isLoading = false;
+  final ApiService _apiService = ApiService();
+
+  Future<void> _pickFile() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['xlsx', 'xls'],
+      );
+
+      if (result != null) {
+        setState(() {
+          _selectedFile = File(result.files.single.path!);
+          _fileName = result.files.single.name;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error picking file: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _uploadFile() async {
+    if (_selectedFile == null) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await _apiService.uploadFile(_selectedFile!);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('File uploaded successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        setState(() {
+          _selectedFile = null;
+          _fileName = null;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        // Show detailed error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'), // Removed "Upload failed" to see raw message
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,35 +137,62 @@ class FileUploadScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Select an Excel file (.xlsx, .xls) to upload',
+          Text(
+            _fileName ?? 'Select an Excel file (.xlsx, .xls) to upload',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: _fileName != null ? Colors.black87 : Colors.grey,
+              fontWeight: _fileName != null ? FontWeight.w500 : FontWeight.normal,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 30),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () {
-               
-              },
-              icon: const Icon(Icons.upload_file, color: Colors.white),
-              label: const Text(
-                'Choose File',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4A89F5),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          if (_isLoading)
+            const CircularProgressIndicator()
+          else
+            Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _pickFile,
+                    icon: const Icon(Icons.folder_open, color: Colors.white),
+                    label: Text(
+                      _selectedFile != null ? 'Change File' : 'Choose File',
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueGrey, // Distinct color for pick
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                if (_selectedFile != null) ...[
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _uploadFile,
+                      icon: const Icon(Icons.upload_file, color: Colors.white),
+                      label: const Text(
+                        'Upload File',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4A89F5),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
-          ),
         ],
       ),
     );

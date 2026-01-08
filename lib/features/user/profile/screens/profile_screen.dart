@@ -1,5 +1,7 @@
 import 'package:crm_app/features/user/profile/widgets/profile_widget.dart';
+import 'package:crm_app/features/user/profile/widgets/edit_profile_dialog.dart';
 import 'package:flutter/material.dart';
+import '../../../../core/utils/token_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -10,6 +12,23 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isDarkMode = false;
+  String? _userName;
+  String? _userEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final name = await TokenStorage.getUserName();
+    final email = await TokenStorage.getUserEmail();
+    setState(() {
+      _userName = name;
+      _userEmail = email;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +36,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const profileInfo(),
+          profileInfo(
+            userName: _userName,
+            userEmail: _userEmail,
+          ),
           profileMenu(
             icon: Icons.person_outline,
             title: 'Edit Profile',
             trailing: const Icon(Icons.chevron_right, color: Colors.grey),
-            onTap: () {},
+            onTap: () async {
+              final result = await showDialog(
+                context: context,
+                builder: (context) => EditProfileDialog(
+                  currentName: _userName ?? '',
+                  currentEmail: _userEmail ?? '',
+                ),
+              );
+              
+              if (result == true) {
+                _loadUserData();
+              }
+            },
           ),
           profileMenu(
             icon: Icons.lock_outline,

@@ -5,6 +5,8 @@ class TokenStorage {
  
 
   static const String _userNameKey = 'user_name';
+  static const String _userEmailKey = 'user_email';
+  static const String _userIdKey = 'user_id';
 
   // Save Token
   static Future<void> saveToken(String token) async {
@@ -16,6 +18,18 @@ class TokenStorage {
   static Future<void> saveUserName(String name) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_userNameKey, name);
+  }
+
+  // Save User Email
+  static Future<void> saveUserEmail(String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_userEmailKey, email);
+  }
+
+  // Save User ID
+  static Future<void> saveUserId(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_userIdKey, id);
   }
 
   // Get Token
@@ -30,10 +44,24 @@ class TokenStorage {
     return prefs.getString(_userNameKey);
   }
 
+  // Get User Email
+  static Future<String?> getUserEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_userEmailKey);
+  }
+
+  // Get User ID
+  static Future<String?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_userIdKey);
+  }
+
   // Clear Token (Logout)
   static Future<void> clearToken() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
     await prefs.remove(_userNameKey);
+    await prefs.remove(_userEmailKey);
+    await prefs.remove(_userIdKey);
   }
 }

@@ -32,14 +32,21 @@ class profileHearder extends StatelessWidget implements PreferredSizeWidget {
 
 
 class profileInfo extends StatelessWidget {
-  const profileInfo({super.key});
+  final String? userName;
+  final String? userEmail;
+
+  const profileInfo({
+    super.key,
+    this.userName,
+    this.userEmail,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        SizedBox(height: 30),
-        CircleAvatar(
+        const SizedBox(height: 30),
+        const CircleAvatar(
           radius: 50,
           backgroundColor: Color(0xFFE3F2FD), 
           child: Icon(
@@ -48,23 +55,23 @@ class profileInfo extends StatelessWidget {
             color: Color(0xFF4A89F5),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Text(
-          'Kunal Bhadane',
-          style: TextStyle(
+          userName ?? 'Guest User',
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
-          'kunalbhadane@email.com',
-          style: TextStyle(
+          userEmail ?? 'No email provided',
+          style: const TextStyle(
             fontSize: 16,
             color: Colors.grey,
           ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
       ],
     );
   }

@@ -26,8 +26,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F7FC),
-      body: SingleChildScrollView(
-        child: Column(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await Provider.of<DashboardProvider>(context, listen: false).fetchDashboardData();
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
           children: [
 
             Stack(
@@ -63,7 +68,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 60),
           ],
         ),
+        ),
       ),
+    
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:crm_app/core/services/api_service.dart';
 import 'package:crm_app/core/utils/token_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AuthProvider extends ChangeNotifier {
@@ -19,15 +20,35 @@ class AuthProvider extends ChangeNotifier {
       
       // 1. Save Token
       final token = response['token'];
+
+
+
+
       if (token != null) {
-        await TokenStorage.saveToken(token);
-      }
+        await TokenStorage.saveToken(token); 
+        
+        final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('user_role', role);
+             }
 
       // 2. Save User Details
       if (response['user'] != null && response['user'] is Map) {
          final user = response['user'];
+         debugPrint("Login Response User Keys: ${user.keys.toList()}"); // DEBUG
+         
          if (user.containsKey('name')) {
              await TokenStorage.saveUserName(user['name']);
+         }
+         if (user.containsKey('email')) {
+             await TokenStorage.saveUserEmail(user['email']);
+         }
+         // Save ID (check both 'id' and '_id')
+         if (user.containsKey('id')) {
+             await TokenStorage.saveUserId(user['id']);
+         } else if (user.containsKey('_id')) {
+             await TokenStorage.saveUserId(user['_id']);
+         } else {
+             debugPrint("WARNING: User ID not found in response!");
          }
       }
 
@@ -60,7 +81,8 @@ class AuthProvider extends ChangeNotifier {
   Future<void> logout() async {
     final token = await TokenStorage.getToken();
     if (token != null) {
-      await _apiService.logout(token);
+      // Fire and forget - don't wait for server response
+      _apiService.logout(token).ignore(); 
     }
     await TokenStorage.clearToken();
     notifyListeners();

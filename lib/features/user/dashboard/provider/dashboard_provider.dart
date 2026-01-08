@@ -37,7 +37,7 @@ class DashboardProvider extends ChangeNotifier {
       }
 
       // 2. Call the API service
-      final summary = await _apiService.getDashboardCounts(token);
+      final summary = await _apiService.getuserDashboardCounts(token);
   
       _dashboardSummary = summary;
 
