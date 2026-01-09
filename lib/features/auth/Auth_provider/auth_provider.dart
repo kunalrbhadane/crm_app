@@ -1,6 +1,7 @@
 import 'package:crm_app/core/services/api_service.dart';
 import 'package:crm_app/core/utils/token_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AuthProvider extends ChangeNotifier {
@@ -12,7 +13,7 @@ class AuthProvider extends ChangeNotifier {
   // Added 'role' parameter
   Future<bool> login(String email, String password, String role, BuildContext context) async {
     _setLoading(true);
-
+ 
     try {
       // Pass role to API Service
       final response = await _apiService.login(email, password, role);
@@ -21,6 +22,9 @@ class AuthProvider extends ChangeNotifier {
       final token = response['token'];
       if (token != null) {
         await TokenStorage.saveToken(token);
+
+         final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('user_role', role);
       }
 
       // 2. Save User Details (Optional but recommended)
@@ -37,6 +41,9 @@ class AuthProvider extends ChangeNotifier {
       _showErrorDialog(context, e.toString());
       return false; // Login Failed
     }
+
+
+    
   }
 
   void _setLoading(bool value) {
@@ -59,4 +66,8 @@ class AuthProvider extends ChangeNotifier {
     await TokenStorage.clearToken();
     notifyListeners();
   }
+
+
+
+  
 }

@@ -121,7 +121,7 @@ class PdfExportService {
         e.phone,
         e.enquiryType,
         e.courseOrService,
-        e.addedBy ?? '-', // Fallback if API missing field
+        e.addedByName ?? '-', // Fallback if API missing field
         dateStr,
       ];
     }).toList();

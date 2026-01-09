@@ -9,7 +9,7 @@ class EnquiryModel {
   final String message;
   final String status; // 'New', etc
   final String createdAt;
-  final String? addedBy;
+  final String? addedByName;
 
   EnquiryModel({
     required this.id,
@@ -22,7 +22,7 @@ class EnquiryModel {
     required this.message,
     required this.status,
     required this.createdAt,
-    this.addedBy,
+    this.addedByName,
   });
 
   factory EnquiryModel.fromJson(Map<String, dynamic> json) {
@@ -43,7 +43,7 @@ class EnquiryModel {
       message: json['message'] ?? '',
       status: json['status'] ?? 'New',
       createdAt: json['createdAt'] ?? '',
-      addedBy: json['addedBy'] is Map ? json['addedBy']['name'] : (json['addedBy'] ?? '-'),
+      addedByName: json['addedByName'] is Map ? json['addedByName']['name'] : (json['addedByName'] ?? '-'),
     );
   }
 

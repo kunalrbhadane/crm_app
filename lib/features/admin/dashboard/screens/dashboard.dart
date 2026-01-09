@@ -582,46 +582,47 @@ class _EnquiriesDashboardScreenState extends State<EnquiriesDashboardScreen> {
             ),
 
             const Spacer(),
-
+              
+              
             // Footer
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 45,
-                      width: 45,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.person, color: drawerBlue, size: 24),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text(
-                          "Admin",
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                        ),
-                        Text(
-                          "admin@example.com",
-                          style: TextStyle(color: Colors.white70, fontSize: 11),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            )
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            //   child: Container(
+            //     padding: const EdgeInsets.all(12),
+            //     decoration: BoxDecoration(
+            //       color: Colors.white.withOpacity(0.15),
+            //       borderRadius: BorderRadius.circular(16),
+            //     ),
+            //     child: Row(
+            //       children: [
+            //         Container(
+            //           height: 45,
+            //           width: 45,
+            //           decoration: const BoxDecoration(
+            //             color: Colors.white,
+            //             shape: BoxShape.circle,
+            //           ),
+            //           child: Icon(Icons.person, color: drawerBlue, size: 24),
+            //         ),
+            //         const SizedBox(width: 12),
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           mainAxisSize: MainAxisSize.min,
+            //           children: const [
+            //             Text(
+            //               "Admin",
+            //               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+            //             ),
+            //             Text(
+            //               "admin@example.com",
+            //               style: TextStyle(color: Colors.white70, fontSize: 11),
+            //             ),
+            //           ],
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

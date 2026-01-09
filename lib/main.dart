@@ -2,6 +2,7 @@ import 'package:crm_app/features/admin/dashboard/enquiry_provider/enquiry_provid
 import 'package:crm_app/features/admin/dashboard/user_provider/user_provider.dart';
 import 'package:crm_app/features/auth/Auth_provider/auth_provider.dart';
 import 'package:crm_app/features/auth/role_selection/screens/role_selection_screen.dart';
+import 'package:crm_app/features/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFF7F8F3),
       ),
      
-      home: const RoleSelectionScreen(), 
+      home: const SplashScreen(), 
     );
   }
 }
